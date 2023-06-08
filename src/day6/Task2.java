@@ -45,12 +45,12 @@ public class Task2 {
                 result+="Fizz";
             }
             if (i%5==0){
-                result+=" Buzz";
+                result = (result+" Buzz").trim();
             }
-            if (result.length()==0){
+            if (result.isEmpty()){
                 result = Integer.toString(i);
             }
-            System.out.println(result.trim());
+            System.out.println(result);
 
         }
     }
