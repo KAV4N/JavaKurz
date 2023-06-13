@@ -9,13 +9,27 @@ package day7;
 //		1, 2, Fizz, 4, Buzz, Fizz, 7, 8, Fizz, Buzz, 11, Fizz, 13, 14, Fizz Buzz, 16, 17, Fizz, 19, Buzz, Fizz, 22, 23, Fizz, Buzz, 26, Fizz, 28, 29, Fizz Buzz, 31, 32, Fizz, 34, Buzz, Fizz, …
 
 public class Task3 {
+	public static String getFizzBuzzNumber(int num){
 
+		String result = "";
+		if (num%3==0){
+			result+="Fizz";
+		}
+		if (num%5==0){
+			result = (result+" Buzz").trim();
+		}
+		if (result.isEmpty()){
+			result = Integer.toString(num);
+		}
+		return result;
+	}
 	public static void main(String[] args) {
 		boolean isDivisible3;
 		boolean isDivisible5;
+		final int LIMIT = 100;
 		String result;
 		String fullResult = "";
-		for (int i = 1; i < 101; i++){
+		for (int i = 1; i <= LIMIT; i++){
 			// 1. pokus
 //            if (i%3==0 && i%5==0){
 //                System.out.println("FizzBuzz");
@@ -47,17 +61,22 @@ public class Task3 {
 //            }
 
 			// 3. pokus
-			result = "";
-			if (i%3==0){
-				result+="Fizz";
-			}
-			if (i%5==0){
-				result = (result+" Buzz").trim();
-			}
-			if (result.isEmpty()){
-				result = Integer.toString(i);
-			}
-			fullResult += (result+", ");
+//			result = "";
+//			if (i%3==0){
+//				result+="Fizz";
+//			}
+//			if (i%5==0){
+//				result = (result+" Buzz").trim();
+//			}
+//			if (result.isEmpty()){
+//				result = Integer.toString(i);
+//			}
+//			fullResult += (result+", ");
+
+
+			//4. pokus
+
+			fullResult += (getFizzBuzzNumber(i)+", ");
 		}
 		fullResult = fullResult.substring(0, fullResult.length() - 2);
 		System.out.println(fullResult);
