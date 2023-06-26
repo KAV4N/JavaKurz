@@ -23,7 +23,7 @@ public class ZadavanieKnih {
 		String nazov;
 		String zaner;
 		String vydavatelstvo;
-		String rokVydania;
+		int rokVydania;
 
 		Scanner inputScan = new Scanner(System.in);
 		inputScan.useLocale(Locale.forLanguageTag("sk-SK"));
@@ -44,7 +44,7 @@ public class ZadavanieKnih {
 			vydavatelstvo = inputScan.nextLine();
 
 			System.out.print("\tZadajte rok vydania: ");
-			rokVydania = inputScan.nextLine();
+			rokVydania = inputScan.nextInt();
 
 			Kniha novaKniha = new Kniha(autor,nazov,zaner,vydavatelstvo,rokVydania);
 			zoznamKnih.add(novaKniha);
