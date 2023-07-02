@@ -1,9 +1,10 @@
 package programDatabazaKnih.libraryDatabasev4;
 
+import programDatabazaKnih.libraryDatabasev4.controller.LibraryConsoleController;
 
 public class LibraryMain {
 	public static void main(String[] args) {
-		LibraryConsole bookLibrary = new LibraryConsole();
-		bookLibrary.start();
+		LibraryConsoleController controller = new LibraryConsoleController();
+		controller.start();
 	}
 }

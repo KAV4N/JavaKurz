@@ -1,31 +1,47 @@
-package programDatabazaKnih.libraryDatabasev4;
-import java.util.ArrayList;
-import java.util.HashMap;
+package programDatabazaKnih.libraryDatabasev4.dao;
+import programDatabazaKnih.libraryDatabasev4.models.Book;
+import programDatabazaKnih.libraryDatabasev4.models.BookStorage;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 
-public class BookDatabase {
-	protected BookStorage bookData;
-
-	public BookDatabase(){
+public class BookDatabaseImpl implements BookDatabase {
+	private BookStorage bookData;
+	public BookDatabaseImpl(){
 		bookData = new BookStorage();
 	}
-	protected void addBook(Book book) {
-		bookData.addBook(book);
+
+
+
+	@Override
+	public void addBook(Book book){
+		int token = bookData.getDatabaseSize();
+		if (!bookData.getMissingKeys().isEmpty()){
+			token = bookData.getMissingKeys().removeFirst();
+		}
+		bookData.getBookMap().put(token, book);
 	}
 
-	protected void deleteBook(int index) {
-		if (isBookStored(index)) {
-			bookData.removeBook(index);
+	@Override
+	public boolean deleteBook(int token){
+		boolean bookDeleted = false;
+		if (isBookStored(token)) {
+			bookData.getBookMap().remove(token);
+			bookData.getMissingKeys().add(token);
+			bookDeleted = true;
 		}
+		return bookDeleted;
 	}
-	protected void clearDatabase(){
+
+	@Override
+	public void clearDatabase(){
 		bookData.setBookMap(new LinkedHashMap<>());
 		bookData.setMissingKeys(new LinkedList<>());
 	}
 
-	protected LinkedHashMap<Integer,Book> findBook(String title) {
+	@Override
+	public LinkedHashMap<Integer,Book> findBookByTitle(String title) {
 		LinkedHashMap<Integer,Book> foundBooks = new LinkedHashMap<>();
 		if (!title.isBlank()) {
 			Book book;
@@ -37,9 +53,10 @@ public class BookDatabase {
 			}
 		}
 		return foundBooks;
-
 	}
-	public Book getBookByIndex(int index) {
+
+	@Override
+	public Book findBookByIndex(int index) {
 		Book book = null;
 		if (index >= 0 && index < bookData.getDatabaseSize()) {
 			book = bookData.getBookMap().get(index);
@@ -51,7 +68,7 @@ public class BookDatabase {
 		return bookData.getDatabaseSize();
 	}
 
-	protected boolean isBookStored(int index) {
+	public boolean isBookStored(int index) {
 		return index >= 0 && index < bookData.getBookMap().size();
 	}
 	public BookStorage getBookData(){

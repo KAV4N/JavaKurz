@@ -1,4 +1,4 @@
-package programDatabazaKnih.libraryDatabasev4;
+package programDatabazaKnih.libraryDatabasev4.models;
 
 import java.io.Serializable;
 
@@ -17,6 +17,15 @@ public class Book implements Serializable {
 		this.genre = genre;
 		this.publisher = publisher;
 		this.publicationYear = publicationYear;
+	}
+
+	public Book(String author, String title, String genre, String publisher, int publicationYear, double price) {
+		this.author = author;
+		this.title = title;
+		this.genre = genre;
+		this.publisher = publisher;
+		this.publicationYear = publicationYear;
+		this.price = price;
 	}
 
 	public String getAuthor() {

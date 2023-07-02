@@ -1,14 +1,13 @@
-package programDatabazaKnih.libraryDatabasev4.service;
+package programDatabazaKnih.libraryDatabasev4.services;
 
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import programDatabazaKnih.libraryDatabasev4.Book;
-import programDatabazaKnih.libraryDatabasev4.BookDatabase;
+import programDatabazaKnih.libraryDatabasev4.dao.BookDatabaseImpl;
+import programDatabazaKnih.libraryDatabasev4.models.Book;
 
-import javax.swing.plaf.PanelUI;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,9 +18,9 @@ public class BookPdfExporterService {
 	public static final Font HEADER_FONT = new Font(Font.HELVETICA, 10,Font.BOLD);
 	public static final Font CONTENT_FONT = new Font(Font.HELVETICA, 8);
 
-	private BookDatabase database;
+	private BookDatabaseImpl database;
 	final private String pdfPath = "libraryDatabaseData/libraryOutput/library.pdf";
-	public BookPdfExporterService(BookDatabase database){
+	public BookPdfExporterService(BookDatabaseImpl database){
 		this.database = database;
 	}
 	public boolean openPdfReport(){

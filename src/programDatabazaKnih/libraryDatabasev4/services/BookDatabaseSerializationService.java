@@ -1,14 +1,14 @@
-package programDatabazaKnih.libraryDatabasev4.service;
+package programDatabazaKnih.libraryDatabasev4.services;
 
-import programDatabazaKnih.libraryDatabasev4.BookDatabase;
-import programDatabazaKnih.libraryDatabasev4.BookStorage;
+import programDatabazaKnih.libraryDatabasev4.dao.BookDatabaseImpl;
+import programDatabazaKnih.libraryDatabasev4.models.BookStorage;
 
 import java.io.*;
 
 public class BookDatabaseSerializationService {
-	private BookDatabase database;
+	private BookDatabaseImpl database;
 	final private String backupPath = "libraryDatabaseData/bookDatabaseState/database.ser";
-	public BookDatabaseSerializationService(BookDatabase database){
+	public BookDatabaseSerializationService(BookDatabaseImpl database){
 		this.database = database;
 	}
 	private boolean createBackupPath(){
