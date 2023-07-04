@@ -1,21 +1,24 @@
-package programDatabazaKnih.libraryDatabasev4.controller;
+package programDatabazaKnih.libraryDatabasev5.controller;
 
 
-import programDatabazaKnih.libraryDatabasev4.dao.BookDatabaseImpl;
-import programDatabazaKnih.libraryDatabasev4.models.Author;
-import programDatabazaKnih.libraryDatabasev4.models.Book;
-import programDatabazaKnih.libraryDatabasev4.services.BookDatabaseSerializationService;
-import programDatabazaKnih.libraryDatabasev4.services.BookPdfExporterService;
-import programDatabazaKnih.libraryDatabasev4.view.LibraryConsoleView;
+import programDatabazaKnih.libraryDatabasev5.dao.BookDatabase;
+import programDatabazaKnih.libraryDatabasev5.dao.BookDatabaseImpl;
+import programDatabazaKnih.libraryDatabasev5.models.Author;
+import programDatabazaKnih.libraryDatabasev5.models.Book;
+import programDatabazaKnih.libraryDatabasev5.services.BookDatabaseSerialization;
+import programDatabazaKnih.libraryDatabasev5.services.BookDatabaseSerializationService;
+import programDatabazaKnih.libraryDatabasev5.services.BookPdfExporter;
+import programDatabazaKnih.libraryDatabasev5.services.BookPdfExporterService;
+import programDatabazaKnih.libraryDatabasev5.view.LibraryConsoleView;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class LibraryConsoleController {
-	private final BookDatabaseImpl bookDatabase;
+	private final BookDatabase bookDatabase;
 	private final LibraryConsoleView view;
-	private final BookDatabaseSerializationService bookDatabaseSerializationService;
-	private final BookPdfExporterService pdfExporterService;
+	private final BookDatabaseSerialization bookDatabaseSerializationService;
+	private final BookPdfExporter pdfExporterService;
 	private final Scanner scanner;
 
 	public LibraryConsoleController() {
@@ -66,18 +69,21 @@ public class LibraryConsoleController {
 				deleteBookByIndex();
 				break;
 			case "6":
-				view.displayBookDatabaseSize(bookDatabase.getSize());
+				deleteAuthor();
 				break;
 			case "7":
-				saveState();
+				view.displayBookDatabaseSize(bookDatabase.getSize());
 				break;
 			case "8":
-				loadState();
+				saveState();
 				break;
 			case "9":
-				createPdfReport();
+				loadState();
 				break;
 			case "10":
+				createPdfReport();
+				break;
+			case "11":
 				openPdfReport();
 				break;
 			case "x0x":
@@ -88,14 +94,31 @@ public class LibraryConsoleController {
 				break;
 		}
 	}
-	public void insertStockLibrary() {
-		bookDatabase.insertStockLibrary();
+	private void deleteAuthor(){
+		view.displayDeleteAuthor();
+		if (bookDatabase.deleteAuthor(scanner.nextLine().trim())){
+			view.displayDeleteAuthor();
+		}
+		else{
+			view.displayAuthorNotDeleted();
+		}
 	}
+
+//	public void insertStockLibrary() {
+//		bookDatabase.insertStockLibrary();
+//	}
+
 	private void addAuthor() {
 		view.displayPromptAddAuthor();
+		System.out.print("\tName: ");
 		String name = scanner.nextLine();
 		Author author = new Author(name);
-		bookDatabase.addAuthor(author);
+		if (bookDatabase.addAuthor(author)){
+			view.displayAuthorAddedSuccessfully();
+		}
+		else {
+			view.displayAuthorNotAdded();
+		}
 	}
 
 	private void addBook() {
@@ -115,10 +138,15 @@ public class LibraryConsoleController {
 
 		int year = integerInput("\tYear: ");
 
-		Book newBook = new Book(title, authorName, genre, publisher, year);
-		bookDatabase.addBook(newBook);
+		Book newBook = new Book(title,authorName, genre, publisher, year);
+		if (bookDatabase.addBook(newBook)) {
+			view.displayBookAddedSuccessfully();
+		}
+		else {
+			view.displayBookNotAdded();
+		}
 
-		view.displayBookAddedSuccessfully();
+
 	}
 
 	private void findBookByIndex() {
@@ -139,8 +167,8 @@ public class LibraryConsoleController {
 
 	private void deleteBookByIndex() {
 		view.displayPromptDeleteBook();
-		int index = Integer.parseInt(scanner.nextLine());
-		boolean bookDeleted = bookDatabase.deleteBook(index);
+		int token = Integer.parseInt(scanner.nextLine());
+		boolean bookDeleted = bookDatabase.deleteBook(token);
 		if (bookDeleted) {
 			view.displayBookDeletedSuccessfully();
 		} else {

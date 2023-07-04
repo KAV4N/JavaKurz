@@ -1,28 +1,31 @@
-package programDatabazaKnih.libraryDatabasev4.services;
+package programDatabazaKnih.libraryDatabasev5.services;
 
-import com.lowagie.text.*;
 import com.lowagie.text.Font;
+import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import programDatabazaKnih.libraryDatabasev4.dao.BookDatabaseImpl;
-import programDatabazaKnih.libraryDatabasev4.models.Book;
+import programDatabazaKnih.libraryDatabasev5.dao.BookDatabase;
+import programDatabazaKnih.libraryDatabasev5.dao.BookDatabaseImpl;
+import programDatabazaKnih.libraryDatabasev5.models.Book;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class BookPdfExporterService {
+public class BookPdfExporterService implements BookPdfExporter {
 	public static final Font TITLE_FONT = new Font(Font.HELVETICA, 24, Font.BOLD);
 	public static final Font HEADER_FONT = new Font(Font.HELVETICA, 10,Font.BOLD);
 	public static final Font CONTENT_FONT = new Font(Font.HELVETICA, 8);
 
-	private BookDatabaseImpl database;
+	private BookDatabase database;
 	final private String pdfPath = "libraryDatabaseData/libraryOutput/library.pdf";
-	public BookPdfExporterService(BookDatabaseImpl database){
+	public BookPdfExporterService(BookDatabase database){
 		this.database = database;
 	}
+
+	@Override
 	public boolean openPdfReport(){
 		boolean isOpen = false;
 		try{
@@ -39,6 +42,8 @@ public class BookPdfExporterService {
 		}
 		return isOpen;
 	}
+
+	@Override
 	public boolean createPdfReport() {
 		Document document = new Document(PageSize.A4,40f,40f,40f,40f);
 		boolean isCreated = false;
@@ -73,6 +78,7 @@ public class BookPdfExporterService {
 	}
 
 
+	@Override
 	public void addTableHeader(PdfPTable table, Font font) {
 		String[] headers = {"Title", "Author", "Genre", "Publication"};
 		for (String header : headers) {
@@ -88,8 +94,8 @@ public class BookPdfExporterService {
 			table.addCell(cell);
 		}
 	}
-
-	private void addRows(PdfPTable table, Font font) {
+	@Override
+	public void addRows(PdfPTable table, Font font) {
 		PdfPCell cellTitle = new PdfPCell();
 		PdfPCell cellAuthor = new PdfPCell();
 		PdfPCell cellGenre= new PdfPCell();

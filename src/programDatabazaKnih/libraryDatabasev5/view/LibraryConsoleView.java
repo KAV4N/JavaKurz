@@ -1,11 +1,12 @@
-package programDatabazaKnih.libraryDatabasev4.view;
+package programDatabazaKnih.libraryDatabasev5.view;
 
-import programDatabazaKnih.libraryDatabasev4.models.Author;
-import programDatabazaKnih.libraryDatabasev4.models.Book;
-import programDatabazaKnih.libraryDatabasev4.models.LibraryStorage;
+import programDatabazaKnih.libraryDatabasev5.models.Author;
+import programDatabazaKnih.libraryDatabasev5.models.Book;
+import programDatabazaKnih.libraryDatabasev5.models.LibraryStorage;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class LibraryConsoleView {
 	public static final String MENU_PROMPT = "\nPlease select an option:";
@@ -18,11 +19,12 @@ public class LibraryConsoleView {
 			"\t(3) Find Book (by index)\n" +
 			"\t(4) Find Book (by name)\n" +
 			"\t(5) Delete Book (by index)\n" +
-			"\t(6) Display database size\n" +
-			"\t(7) Save State\n" +
-			"\t(8) Load State\n" +
-			"\t(9) Create PDF Report\n" +
-			"\t(10) Open PDF Report\n" +
+			"\t(6) Delete Author (by name)\n" +
+			"\t(7) Display database size\n" +
+			"\t(8) Save State\n" +
+			"\t(9) Load State\n" +
+			"\t(10) Create PDF Report\n" +
+			"\t(11) Open PDF Report\n" +
 			"\t(x0x) - Delete All Books\n";
 	public static final String PROMPT_DATABASE_SIZE = "Database size:";
 
@@ -38,19 +40,20 @@ public class LibraryConsoleView {
 	public static final String PROMPT_FIND_BOOK_IDX = "Enter the index of book:";
 	public static final String PROMPT_CLEAR_DATABASE = "Are you sure you want to delete all the books from the database? (y/n)";
 	public static final String PROMPT_SAVE_CHANGES = "Do you want to save changes? (y/n)";
+	public static final String PROMPT_DELETE_AUTHOR = "Enter the name of the author to delete:";
 
 	public void displayMenu() {
 		System.out.println(MENU_PROMPT);
 		System.out.println(MENU_OPTIONS);
 	}
 
-	public void displayBookDatabase(ArrayList<Book> bookList) {
+
+
+	public void displayBookDatabase(List<Book> bookList) {
 		System.out.printf("\t%6s | %-40s | %-30s | %-30s | %-40s | %4s | %6s\n",
 				"Index", "Title", "Author", "Genre", "Publisher", "Year", "Price (€)");
-		int i = 0;
 		for (Book book : bookList) {
-			book.displayBook(i);
-			i++;
+			book.displayBook(book.getToken());
 		}
 	}
 
@@ -58,16 +61,28 @@ public class LibraryConsoleView {
 		for (Author author : libraryStorage.getAuthorsToBooks().keySet()) {
 			System.out.print("Author: " + author.getName()+"\n");
 			System.out.println("\tBooks:");
-			for (Book book : libraryStorage.getAuthorsToBooks().get(author)) {
-				book.displayBook(libraryStorage.getBookList().indexOf(book));
+			for (Integer id : libraryStorage.getAuthorsToBooks().get(author)) {
+				libraryStorage.getBookList().get(id).displayBook(id);
 			}
 			System.out.println();
 		}
 	}
+
+
 	public void displayBook(int idx, Book book){
 		book.displayBook(idx);
 	}
 
+	public void displayAuthorSuccessfullyDeleted(){
+		System.out.println("Author deleted successfully!");
+	}
+	public void displayAuthorNotDeleted(){
+		System.out.println("There was an error while deleting the author.");
+	}
+
+	public void displayBookNotAdded() {
+		System.out.println("There was an error while adding the book.");
+	}
 	public void displayBookNotFound() {
 		System.out.println("No books found with the given index or title.");
 	}
@@ -102,6 +117,12 @@ public class LibraryConsoleView {
 		System.out.println(PROMPT_ADD_BOOK);
 	}
 
+	public void displayAuthorAddedSuccessfully(){
+		System.out.println("Author added successfully!");
+	}
+	public void displayAuthorNotAdded(){
+		System.out.println("There was an error while adding the author.");
+	}
 	public void displayBookDatabaseSize(int size){
 		System.out.print(PROMPT_DATABASE_SIZE);
 		System.out.println(size);
@@ -139,5 +160,8 @@ public class LibraryConsoleView {
 	}
 	public void displayPromptDeleteBook() {
 		System.out.println(PROMPT_DELETE_BOOK);
+	}
+	public void displayDeleteAuthor() {
+		System.out.println(PROMPT_DELETE_AUTHOR);
 	}
 }

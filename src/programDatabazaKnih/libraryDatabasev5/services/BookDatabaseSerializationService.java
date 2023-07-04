@@ -1,14 +1,15 @@
-package programDatabazaKnih.libraryDatabasev4.services;
+package programDatabazaKnih.libraryDatabasev5.services;
 
-import programDatabazaKnih.libraryDatabasev4.dao.BookDatabaseImpl;
-import programDatabazaKnih.libraryDatabasev4.models.LibraryStorage;
+import programDatabazaKnih.libraryDatabasev5.dao.BookDatabase;
+import programDatabazaKnih.libraryDatabasev5.dao.BookDatabaseImpl;
+import programDatabazaKnih.libraryDatabasev5.models.LibraryStorage;
 
 import java.io.*;
 
-public class BookDatabaseSerializationService {
-	private BookDatabaseImpl database;
+public class BookDatabaseSerializationService implements BookDatabaseSerialization {
+	private BookDatabase database;
 	final private String backupPath = "libraryDatabaseData/bookDatabaseState/database.ser";
-	public BookDatabaseSerializationService(BookDatabaseImpl database){
+	public BookDatabaseSerializationService(BookDatabase database){
 		this.database = database;
 	}
 
@@ -24,6 +25,7 @@ public class BookDatabaseSerializationService {
 //		return isCreated;
 //	}
 
+	@Override
 	public boolean saveState() {
 		boolean isSaved = false;
 //		createBackupPath();
@@ -42,6 +44,7 @@ public class BookDatabaseSerializationService {
 		return isSaved;
 	}
 
+	@Override
 	public boolean loadState() {
 		boolean isLoaded = false;
 //		createBackupPath();

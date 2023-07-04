@@ -1,8 +1,17 @@
-package programDatabazaKnih.libraryDatabasev4.models;
+package programDatabazaKnih.libraryDatabasev5.models;
 
 import java.io.Serializable;
 
 public class Book implements Serializable {
+	public int getToken() {
+		return token;
+	}
+
+	public void setToken(int token) {
+		this.token = token;
+	}
+
+	private int token = 0;
 	private Author author = null;
 	private String authorName = "";
 	private String title = "";
@@ -10,6 +19,14 @@ public class Book implements Serializable {
 	private String publisher = "";
 	private int publicationYear;
 	private double price = 0;
+
+
+	public Book(String title, String genre, String publisher, int publicationYear) {
+		this.title = title;
+		this.genre = genre;
+		this.publisher = publisher;
+		this.publicationYear = publicationYear;
+	}
 
 	public Book(String title, String authorName, String genre, String publisher, int publicationYear) {
 		this.title = title;
@@ -28,7 +45,7 @@ public class Book implements Serializable {
 		this.publicationYear = publicationYear;
 	}
 
-	public Book(String title, Author author,  String genre, String publisher, int publicationYear, double price) {
+	public Book(String title, Author author, String genre, String publisher, int publicationYear, double price) {
 		this.author = author;
 		this.authorName = author.getName();
 		this.title = title;
@@ -110,5 +127,4 @@ public class Book implements Serializable {
 	public void setAuthorName(String authorName) {
 		this.authorName = authorName;
 	}
-
 }
